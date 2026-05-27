@@ -1,5 +1,180 @@
 {
-  "products": [],
-  "price_records": [],
-  "purchase_history": []
+  "products": [
+    {
+      "id": "2fc0cf18-45ba-4748-bab8-d2651e808328",
+      "barcode": "3017620422003",
+      "name": "Nutella",
+      "brand": "Ferrero",
+      "weight_g": 400,
+      "category": "Épicerie",
+      "image_url": ""
+    },
+    {
+      "id": "7de019d1-39ae-4aa0-b256-d6344fcb17d3",
+      "barcode": "3228020316972",
+      "name": "Beurre doux",
+      "brand": "Président",
+      "weight_g": 250,
+      "category": "Produits laitiers",
+      "image_url": ""
+    },
+    {
+      "id": "15ea51eb-5483-4032-bc3d-8d9527ebedcf",
+      "barcode": "5449000000996",
+      "name": "Coca-Cola 1,5L",
+      "brand": "Coca-Cola",
+      "weight_g": 1500,
+      "category": "Boissons",
+      "image_url": ""
+    },
+    {
+      "id": "3f6226e8-3abf-482e-8f56-31cef4d26cf9",
+      "barcode": "8076808001180",
+      "name": "Spaghetti n°5",
+      "brand": "Barilla",
+      "weight_g": 500,
+      "category": "Épicerie",
+      "image_url": ""
+    },
+    {
+      "id": "4cd67cec-c094-43c0-bfb5-52e7c6d288a6",
+      "barcode": "3033490004295",
+      "name": "Yaourts nature x4",
+      "brand": "Danone",
+      "weight_g": 500,
+      "category": "Produits laitiers",
+      "image_url": ""
+    }
+  ],
+  "price_records": [
+    {
+      "id": "99bec8c1-6fd8-4e23-90d5-5f4e4c0aab8d",
+      "product_id": "2fc0cf18-45ba-4748-bab8-d2651e808328",
+      "store": "Lidl",
+      "price_eur": 3.79,
+      "date": "2026-05-22",
+      "price_per_100g": 0.948
+    },
+    {
+      "id": "a8985f7b-6ee4-4aaa-b034-2c93ba0720c3",
+      "product_id": "2fc0cf18-45ba-4748-bab8-d2651e808328",
+      "store": "Leclerc",
+      "price_eur": 3.99,
+      "date": "2026-04-27",
+      "price_per_100g": 0.998
+    },
+    {
+      "id": "3cc970b3-c08f-41e1-bdc1-7d92fb6ab710",
+      "product_id": "2fc0cf18-45ba-4748-bab8-d2651e808328",
+      "store": "Carrefour",
+      "price_eur": 4.29,
+      "date": "2026-03-28",
+      "price_per_100g": 1.073
+    },
+    {
+      "id": "a46b1e7f-93d4-4c38-8b07-9b702092157c",
+      "product_id": "7de019d1-39ae-4aa0-b256-d6344fcb17d3",
+      "store": "Aldi",
+      "price_eur": 1.79,
+      "date": "2026-05-24",
+      "price_per_100g": 0.716
+    },
+    {
+      "id": "227d1120-89af-4bcc-9da8-ef969487c65a",
+      "product_id": "7de019d1-39ae-4aa0-b256-d6344fcb17d3",
+      "store": "Leclerc",
+      "price_eur": 1.89,
+      "date": "2026-05-02",
+      "price_per_100g": 0.756
+    },
+    {
+      "id": "2ece2bba-835f-4508-a76b-dbd2d80e5004",
+      "product_id": "7de019d1-39ae-4aa0-b256-d6344fcb17d3",
+      "store": "Intermarché",
+      "price_eur": 2.05,
+      "date": "2026-03-28",
+      "price_per_100g": 0.82
+    },
+    {
+      "id": "e8f7240a-d131-417b-b14f-ee2ff2a3f66e",
+      "product_id": "15ea51eb-5483-4032-bc3d-8d9527ebedcf",
+      "store": "Leclerc",
+      "price_eur": 1.89,
+      "date": "2026-05-20",
+      "price_per_100g": 0.126
+    },
+    {
+      "id": "2bf38e32-720c-4805-8543-59500099ee21",
+      "product_id": "15ea51eb-5483-4032-bc3d-8d9527ebedcf",
+      "store": "Carrefour",
+      "price_eur": 1.99,
+      "date": "2026-04-27",
+      "price_per_100g": 0.133
+    },
+    {
+      "id": "27538686-f854-4e20-8171-8228eb36fe4d",
+      "product_id": "3f6226e8-3abf-482e-8f56-31cef4d26cf9",
+      "store": "Lidl",
+      "price_eur": 0.99,
+      "date": "2026-05-17",
+      "price_per_100g": 0.198
+    },
+    {
+      "id": "24e17554-c2e9-426d-afd4-00a4dc7d4eba",
+      "product_id": "3f6226e8-3abf-482e-8f56-31cef4d26cf9",
+      "store": "Carrefour",
+      "price_eur": 1.49,
+      "date": "2026-04-02",
+      "price_per_100g": 0.298
+    },
+    {
+      "id": "4de7a801-69ef-4710-b60a-888f22f89eaf",
+      "product_id": "4cd67cec-c094-43c0-bfb5-52e7c6d288a6",
+      "store": "Aldi",
+      "price_eur": 1.29,
+      "date": "2026-05-23",
+      "price_per_100g": 0.258
+    },
+    {
+      "id": "489357e3-a1be-454b-afc2-cadd489d5b08",
+      "product_id": "4cd67cec-c094-43c0-bfb5-52e7c6d288a6",
+      "store": "Leclerc",
+      "price_eur": 1.39,
+      "date": "2026-04-29",
+      "price_per_100g": 0.278
+    },
+    {
+      "id": "9da82b06-dbc6-4acc-926b-89329a002614",
+      "product_id": "4cd67cec-c094-43c0-bfb5-52e7c6d288a6",
+      "store": "Carrefour",
+      "price_eur": 1.55,
+      "date": "2026-03-30",
+      "price_per_100g": 0.31
+    }
+  ],
+  "purchase_history": [
+    {
+      "id": "3d5b4b5f-1722-48cb-9d8f-f3d3c346aa8e",
+      "date": "2026-04-27",
+      "store": "Lidl",
+      "items": [
+        {
+          "product_id": "2fc0cf18-45ba-4748-bab8-d2651e808328",
+          "quantity": 1,
+          "price_eur": 3.79
+        },
+        {
+          "product_id": "15ea51eb-5483-4032-bc3d-8d9527ebedcf",
+          "quantity": 2,
+          "price_eur": 1.89
+        },
+        {
+          "product_id": "4cd67cec-c094-43c0-bfb5-52e7c6d288a6",
+          "quantity": 1,
+          "price_eur": 1.29
+        }
+      ],
+      "total_eur": 8.86
+    }
+  ]
 }
