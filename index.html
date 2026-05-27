@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#2563eb">
+  <title>Courses Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ── En-tête ─────────────────────────────────────────── -->
+  <header>
+    <span style="font-size:1.5rem">🛒</span>
+    <div>
+      <h1>Courses Tracker</h1>
+      <div class="subtitle">Suivi des prix alimentaires</div>
+    </div>
+  </header>
+
+  <!-- ── Onglets ──────────────────────────────────────────── -->
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn" data-tab="releve" role="tab" aria-label="Relevé de prix">
+      <span class="tab-icon">🏷️</span>
+      <span>Relevé</span>
+    </button>
+    <button class="tab-btn" data-tab="ticket" role="tab" aria-label="Ticket de caisse">
+      <span class="tab-icon">🧾</span>
+      <span>Ticket</span>
+    </button>
+    <button class="tab-btn" data-tab="liste" role="tab" aria-label="Liste de courses">
+      <span class="tab-icon">📋</span>
+      <span>Liste</span>
+    </button>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════
+       ONGLET 1 — RELEVÉ DE PRIX
+  ════════════════════════════════════════════════════════ -->
+  <section id="tab-releve" class="tab-content" role="tabpanel">
+
+    <!-- Bannière config (cachée si tout va bien) -->
+    <div id="config-banner" class="config-banner" style="display:none">
+      <strong>⚠️ Configuration requise</strong><br>
+      Définissez les variables d'environnement Netlify :<br>
+      <code>GITHUB_TOKEN</code> &nbsp; <code>GITHUB_OWNER</code> &nbsp; <code>GITHUB_REPO</code><br>
+      <small>Voir la documentation dans <code>TECH_DOC.txt</code></small>
+    </div>
+
+    <!-- Formulaire relevé -->
+    <div class="card">
+      <div class="card-title">Nouveau relevé de prix</div>
+
+      <div class="scan-btn-wrap">
+        <button id="releve-scan-btn" class="btn-scan" type="button">
+          📷 Scanner un produit
+        </button>
+      </div>
+
+      <form id="releve-form" novalidate>
+        <div class="form-group">
+          <label for="releve-barcode">Code-barre</label>
+          <input id="releve-barcode" type="text" inputmode="numeric"
+                 placeholder="Ex : 3017620422003" autocomplete="off">
+        </div>
+
+        <img id="releve-img" src="" alt="Produit" aria-hidden="true">
+
+        <div class="form-group">
+          <label for="releve-name">Nom du produit <span class="required">*</span></label>
+          <input id="releve-name" type="text" placeholder="Ex : Nutella" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="releve-brand">Marque</label>
+            <input id="releve-brand" type="text" placeholder="Ex : Ferrero">
+          </div>
+          <div class="form-group">
+            <label for="releve-weight">Poids (g)</label>
+            <input id="releve-weight" type="number" inputmode="decimal" min="0"
+                   placeholder="Ex : 400">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="releve-category">Catégorie</label>
+          <select id="releve-category"></select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="releve-store">Magasin <span class="required">*</span></label>
+            <select id="releve-store"></select>
+          </div>
+          <div class="form-group">
+            <label for="releve-date">Date</label>
+            <input id="releve-date" type="date">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="releve-price">Prix (€) <span class="required">*</span></label>
+          <input id="releve-price" type="number" inputmode="decimal" min="0" step="0.01"
+                 placeholder="Ex : 3,99" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          ✅ Enregistrer ce relevé
+        </button>
+      </form>
+    </div>
+
+    <!-- Historique -->
+    <div class="section-label">10 derniers relevés</div>
+    <div id="recent-records"></div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       ONGLET 2 — TICKET DE CAISSE
+  ════════════════════════════════════════════════════════ -->
+  <section id="tab-ticket" class="tab-content" role="tabpanel">
+
+    <div class="card">
+      <div class="card-title">Informations du ticket</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ticket-store">Magasin</label>
+          <select id="ticket-store"></select>
+        </div>
+        <div class="form-group">
+          <label for="ticket-date">Date</label>
+          <input id="ticket-date" type="date">
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="btn-group" style="margin-bottom:16px">
+      <button id="ticket-scan-btn" class="btn btn-scan" type="button" style="flex:2">
+        📷 Scanner
+      </button>
+      <button id="ticket-add-manual-btn" class="btn btn-outline btn-sm" type="button" style="flex:1">
+        🔍 Chercher
+      </button>
+    </div>
+
+    <!-- Total en temps réel -->
+    <div class="ticket-total-bar">
+      <span>Total estimé</span>
+      <span id="ticket-total">0,00 €</span>
+    </div>
+
+    <!-- Liste des articles -->
+    <div id="ticket-items"></div>
+
+    <!-- Boutons ticket -->
+    <div class="btn-group" style="margin-top:16px">
+      <button id="ticket-save-btn" class="btn btn-success btn-full">
+        💾 Enregistrer le ticket
+      </button>
+      <button id="ticket-clear-btn" class="btn btn-secondary btn-sm">
+        🗑️
+      </button>
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       ONGLET 3 — LISTE DE COURSES
+  ════════════════════════════════════════════════════════ -->
+  <section id="tab-liste" class="tab-content" role="tabpanel">
+
+    <!-- Recherche produit -->
+    <div class="card">
+      <div class="card-title">Ajouter des produits</div>
+      <div class="search-wrapper">
+        <input id="liste-search" type="search" placeholder="🔍 Rechercher un produit..."
+               autocomplete="off" autocorrect="off">
+        <div id="liste-search-results"></div>
+      </div>
+    </div>
+
+    <!-- Produits sélectionnés -->
+    <div class="section-label">Produits sélectionnés</div>
+    <div id="liste-selected"></div>
+
+    <!-- Boutons génération -->
+    <div class="btn-group" style="margin: 16px 0">
+      <button id="liste-generate-btn" class="btn btn-primary btn-full">
+        ⚡ Optimiser par magasin
+      </button>
+      <button id="liste-single-store-btn" class="btn btn-outline btn-full">
+        🏪 Tout au même magasin
+      </button>
+    </div>
+
+    <!-- Liste générée -->
+    <div id="liste-output"></div>
+
+    <!-- Boutons export (cachés par défaut) -->
+    <div class="btn-group" style="margin-top:12px">
+      <button id="liste-copy-btn" class="btn btn-secondary btn-sm" style="display:none">
+        📋 Copier
+      </button>
+      <button id="liste-print-btn" class="btn btn-secondary btn-sm" style="display:none">
+        🖨️ Imprimer
+      </button>
+    </div>
+
+  </section>
+
+</div><!-- /#app -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     MODAL SCANNER
+════════════════════════════════════════════════════════ -->
+<div id="scanner-modal" class="modal-overlay" role="dialog" aria-modal="true"
+     aria-label="Scanner un code-barre">
+  <div style="width:100%;max-width:480px;padding:20px">
+    <h2 style="color:#fff;text-align:center;margin-bottom:14px">
+      📷 Scanner un code-barre
+    </h2>
+    <div class="scanner-aim">
+      <video id="scanner-video" playsinline muted></video>
+    </div>
+    <p class="scanner-guide">Centrez le code-barre dans la zone rouge</p>
+    <button id="scanner-cancel-btn" class="btn btn-secondary btn-full" type="button">
+      Annuler
+    </button>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     MODAL ARTICLE TICKET
+════════════════════════════════════════════════════════ -->
+<div id="ticket-item-modal" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <h3 id="tim-product-name"></h3>
+    <div class="modal-brand" id="tim-brand"></div>
+
+    <div class="form-group">
+      <label for="tim-price">Prix payé (€) <span class="required">*</span></label>
+      <input id="tim-price" type="number" inputmode="decimal" min="0" step="0.01"
+             placeholder="Ex : 3,79">
+    </div>
+    <div class="form-group">
+      <label for="tim-qty">Quantité</label>
+      <input id="tim-qty" type="number" inputmode="numeric" min="1" value="1">
+    </div>
+
+    <div class="btn-group">
+      <button id="tim-confirm" class="btn btn-success btn-full" type="button">
+        ✅ Ajouter
+      </button>
+      <button id="tim-cancel" class="btn btn-secondary btn-sm" type="button">
+        Annuler
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── Loader ────────────────────────────────────────────── -->
+<div id="loader" role="status" aria-label="Chargement">
+  <div class="loader-spinner"></div>
+</div>
+
+<!-- ── Toast ─────────────────────────────────────────────── -->
+<div id="toast" role="alert" aria-live="polite"></div>
+
+
+<!-- ── Scripts ───────────────────────────────────────────── -->
+<!-- ZXing : lecteur de codes-barres (CDN cdnjs / fallback unpkg) -->
+<script>
+  (function() {
+    var cdnjs = document.createElement('script');
+    cdnjs.src = 'https://cdnjs.cloudflare.com/ajax/libs/zxing-js/0.21.3/umd/index.min.js';
+    cdnjs.onerror = function() {
+      var fb = document.createElement('script');
+      fb.src = 'https://unpkg.com/@zxing/library@0.21.3/umd/index.js';
+      document.head.appendChild(fb);
+    };
+    document.head.appendChild(cdnjs);
+  })();
+</script>
+<script src="app.js" defer></script>
+
+</body>
+</html>

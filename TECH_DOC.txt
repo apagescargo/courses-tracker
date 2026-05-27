@@ -1,0 +1,105 @@
+doc_version: 1 | updated: 2026-05-27 00:00 | trigger: init
+
+project: courses-tracker | version: 1 | stack: HTML/CSS/JS vanilla | deploy: Netlify
+goal: tracker prix produits alimentaires par magasin, historique achats, liste courses optimisée
+entry_point: index.html
+language: fr (UI entière en français)
+access: lien public, aucun système de compte
+
+FILE: index.html | rôle: page unique, navigation par onglets, imports CSS+JS, 2 modales (scanner, ticket item)
+FILE: style.css | rôle: styles vanilla mobile-first, variables CSS custom properties, print media query
+FILE: app.js | rôle: logique complète (state, API, scanner, 3 onglets, seed data)
+FILE: netlify/functions/github-proxy.js | rôle: proxy GitHub API côté serveur, protège le token
+FILE: netlify.toml | rôle: config build Netlify (publish="."), déclare le dossier functions
+FILE: data/prices.json | rôle: fichier de données hébergé sur GitHub, lu/écrit via API
+
+DEP: ZXing (@zxing/library 0.21.3) | source: cdnjs avec fallback unpkg | global: ZXing | usage: BrowserMultiFormatReader
+DEP: Open Food Facts API | url: https://world.openfoodfacts.org/api/v2/product/{barcode}.json | auth: aucune | timeout: 6000ms
+DEP: GitHub Contents API | url: https://api.github.com/repos/{owner}/{repo}/contents/{path} | auth: token Bearer
+DEP: Netlify Functions | runtime: Node.js | endpoint: /.netlify/functions/github-proxy
+
+ENTITY: product
+FIELD: id | string | UUID généré client (crypto.randomUUID avec fallback)
+FIELD: barcode | string | EAN-13 (peut être vide si saisie manuelle)
+FIELD: name | string | requis
+FIELD: brand | string | optionnel
+FIELD: weight_g | number|null | poids en grammes, nécessaire pour price_per_100g
+FIELD: category | string | enum parmi CATS (8 valeurs)
+FIELD: image_url | string | depuis Open Food Facts, optionnel
+
+ENTITY: price_record
+FIELD: id | string | UUID
+FIELD: product_id | string | FK → product.id
+FIELD: store | string | enum parmi STORES (6 valeurs : Leclerc, Carrefour, Lidl, Aldi, Intermarché, Autre)
+FIELD: price_eur | number | prix en euros
+FIELD: date | string | ISO date YYYY-MM-DD
+FIELD: price_per_100g | number|null | calculé = (price_eur / weight_g) * 100, arrondi 3 décimales
+
+ENTITY: purchase
+FIELD: id | string | UUID
+FIELD: date | string | ISO date
+FIELD: store | string
+FIELD: items | array de {product_id, quantity, price_eur}
+FIELD: total_eur | number | somme calculée des items
+
+RULE: price_per_100g = Math.round((price_eur / weight_g) * 100 * 1000) / 1000
+RULE: meilleur prix = price_record le plus récent ≤ 90 jours avec price_per_100g le plus bas (fallback price_eur si pas de poids)
+RULE: si aucun relevé ≤ 90 jours → retourner le plus récent avec flag outdated:true
+RULE: optimisation liste → groupByBestStore() regroupe chaque produit dans le magasin du meilleur prix
+RULE: option "tout au même magasin" → bestSingleStore() choisit le magasin avec le plus de produits (tie-break : total le plus bas)
+RULE: données vides au démarrage → seedDemoData() injectée automatiquement + saveData()
+RULE: XSS protection → escHtml() appliqué à tout contenu utilisateur inséré en innerHTML
+
+FLOW: chargement initial
+  DOMContentLoaded → loadData() → GET /.netlify/functions/github-proxy
+  → si products.length === 0 → seedDemoData() → saveData()
+  → initReleve() + initTicket() + initListe() → showTab('releve')
+
+FLOW: relevé de prix
+  bouton scanner → startScanner(callback) → ZXing.BrowserMultiFormatReader.decodeFromVideoDevice
+  → callback(barcode) → fetchOFF(barcode) → fillReleveForm()
+  blur barcode → autoFillReleve() → cherche produit connu d'abord, puis OFF
+  submit → trouver|créer product → créer price_record → saveData() → renderRecentRecords()
+
+FLOW: ticket de caisse
+  scan → addTicketItem(barcode) → fetchOFF → trouver|créer product → openTicketItemModal()
+  modal confirm → state.ticket.items.push() → renderTicket()
+  saveTicket → push purchase_history + price_records pour chaque item → saveData()
+
+FLOW: liste de courses
+  input search (≥2 chars) → renderSearchSuggestions() → filtrer products non déjà sélectionnés
+  clic résultat → addToList(id) → renderSelectedProducts() + renderGeneratedList()
+  "Optimiser" → groupByBestStore() → HTML par magasin avec totaux
+  "Tout au même magasin" → bestSingleStore() → liste unique
+  "Copier" → navigator.clipboard.writeText()
+  "Imprimer" → window.print() (CSS print cache tout sauf #tab-liste + liste-output)
+
+FLOW: sauvegarde GitHub
+  saveData() → PUT /.netlify/functions/github-proxy {data, sha}
+  → function → PUT github.com/repos/{owner}/{repo}/contents/data/prices.json
+  → retourne nouveau sha → state.sha mis à jour (nécessaire pour les PUT suivants)
+
+FLOW: scanner fallback
+  si ZXing non disponible ou caméra refusée → prompt() saisie manuelle barcode
+
+ERROR: GITHUB_TOKEN|GITHUB_OWNER|GITHUB_REPO manquants → Netlify function retourne 500 → config-banner affiché
+ERROR: Open Food Facts timeout (6s) ou status≠1 → retourne null → toast "Produit inconnu — remplissez manuellement"
+ERROR: saveData() HTTP error → toast "Erreur de sauvegarde" | state.sha non mis à jour
+ERROR: conflit SHA GitHub (PUT 409/422) → message d'erreur dans toast, données non sauvegardées
+
+DECISION: token GitHub stocké en var env Netlify (GITHUB_TOKEN), jamais exposé au client
+DECISION: un seul fichier JSON sur GitHub (data/prices.json) — pas de base de données
+DECISION: sha GitHub stocké en state.sha pour chaque PUT — obligatoire pour éviter les conflits
+DECISION: ZXing chargé via script injection avec fallback unpkg si cdnjs échoue
+DECISION: pas de framework CSS — custom properties vanilla, mobile-first
+DECISION: navigation par onglets (display:none/block) — pas de routing SPA
+DECISION: escHtml() sur tout innerHTML utilisateur — protection XSS systématique
+DECISION: state.saving flag empêche les sauvegardes concurrentes
+DECISION: seed automatique si products.length === 0 au premier chargement
+
+ENV: GITHUB_TOKEN | Netlify env var | token PAT avec scope repo (Contents read+write)
+ENV: GITHUB_OWNER | Netlify env var | login GitHub du propriétaire du repo
+ENV: GITHUB_REPO  | Netlify env var | nom du repo GitHub hébergeant data/prices.json
+
+MISSING: package.json (non requis — zéro dépendance NPM côté client)
+MISSING: .gitignore (à créer si besoin)
