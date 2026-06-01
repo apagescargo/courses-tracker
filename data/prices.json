@@ -44,6 +44,15 @@
       "weight_g": 500,
       "category": "Produits laitiers",
       "image_url": ""
+    },
+    {
+      "id": "98303b13-ca30-4bca-9157-b9f8d9f37818",
+      "barcode": "3770024649079",
+      "name": "Tablette Noir noisettes et amandes pilées",
+      "brand": "KROKOLA, Merveilles du Monde",
+      "weight_g": 100,
+      "category": "Épicerie",
+      "image_url": "https://images.openfoodfacts.org/images/products/377/002/464/9079/front_fr.19.200.jpg"
     }
   ],
   "price_records": [
@@ -150,6 +159,14 @@
       "price_eur": 1.55,
       "date": "2026-03-30",
       "price_per_100g": 0.31
+    },
+    {
+      "id": "885e28b8-adc4-43bc-92a3-5f3a3082fe01",
+      "product_id": "98303b13-ca30-4bca-9157-b9f8d9f37818",
+      "store": "Carrefour",
+      "price_eur": 2.99,
+      "date": "2026-06-01",
+      "price_per_100g": 2.99
     }
   ],
   "purchase_history": [
