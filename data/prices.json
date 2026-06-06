@@ -89,6 +89,15 @@
       "weight_g": 285,
       "category": "Boissons",
       "image_url": "https://images.openfoodfacts.org/images/products/301/780/050/1658/front_fr.102.200.jpg"
+    },
+    {
+      "id": "f6474dd9-43f0-4d49-b04c-20639e1a885d",
+      "barcode": "3560070825509",
+      "name": "Coquillettes Blé complet",
+      "brand": "Carrefour",
+      "weight_g": 500,
+      "category": "Boissons",
+      "image_url": "https://images.openfoodfacts.org/images/products/356/007/082/5509/front_fr.118.200.jpg"
     }
   ],
   "price_records": [
@@ -235,6 +244,14 @@
       "price_eur": 1.09,
       "date": "2026-06-06",
       "price_per_100g": 0.382
+    },
+    {
+      "id": "8e04176e-5513-4a7f-a3a4-9051eff61d45",
+      "product_id": "f6474dd9-43f0-4d49-b04c-20639e1a885d",
+      "store": "Carrefour",
+      "price_eur": 1.19,
+      "date": "2026-06-06",
+      "price_per_100g": 0.238
     }
   ],
   "purchase_history": [
