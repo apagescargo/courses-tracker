@@ -53,6 +53,15 @@
       "weight_g": 100,
       "category": "Épicerie",
       "image_url": "https://images.openfoodfacts.org/images/products/377/002/464/9079/front_fr.19.200.jpg"
+    },
+    {
+      "id": "f074b00c-2295-44ea-b695-d673071a221d",
+      "barcode": "3021762472307",
+      "name": "Pompote",
+      "brand": "",
+      "weight_g": null,
+      "category": "Épicerie",
+      "image_url": "https://courses-traker.netlify.app/"
     }
   ],
   "price_records": [
@@ -167,6 +176,14 @@
       "price_eur": 2.99,
       "date": "2026-06-01",
       "price_per_100g": 2.99
+    },
+    {
+      "id": "506ccd49-e89e-4979-842f-0f1e362624ec",
+      "product_id": "f074b00c-2295-44ea-b695-d673071a221d",
+      "store": "Carrefour",
+      "price_eur": 22.46,
+      "date": "2026-06-06",
+      "price_per_100g": null
     }
   ],
   "purchase_history": [
