@@ -107,6 +107,15 @@
       "weight_g": 500,
       "category": "Boissons",
       "image_url": "https://images.openfoodfacts.org/images/products/807/680/208/5981/front_en.44.200.jpg"
+    },
+    {
+      "id": "62f85257-ed53-49d9-839c-d8798baad1b0",
+      "barcode": "3165440002926",
+      "name": "Graine Couscous moyen",
+      "brand": "Tipiak",
+      "weight_g": 500,
+      "category": "Boissons",
+      "image_url": "https://images.openfoodfacts.org/images/products/316/544/000/2926/front_fr.35.200.jpg"
     }
   ],
   "price_records": [
@@ -269,6 +278,14 @@
       "price_eur": 0.99,
       "date": "2026-06-06",
       "price_per_100g": 0.198
+    },
+    {
+      "id": "1266394c-d10b-41bc-ad1a-81eaabe18787",
+      "product_id": "62f85257-ed53-49d9-839c-d8798baad1b0",
+      "store": "Carrefour",
+      "price_eur": 1.13,
+      "date": "2026-06-06",
+      "price_per_100g": 0.226
     }
   ],
   "purchase_history": [
