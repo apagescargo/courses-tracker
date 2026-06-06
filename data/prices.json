@@ -98,6 +98,15 @@
       "weight_g": 500,
       "category": "Boissons",
       "image_url": "https://images.openfoodfacts.org/images/products/356/007/082/5509/front_fr.118.200.jpg"
+    },
+    {
+      "id": "af8fad05-6cdb-4621-b77a-67b9aac4d0bb",
+      "barcode": "8076802085981",
+      "name": "Fusilli",
+      "brand": "Barilla",
+      "weight_g": 500,
+      "category": "Boissons",
+      "image_url": "https://images.openfoodfacts.org/images/products/807/680/208/5981/front_en.44.200.jpg"
     }
   ],
   "price_records": [
@@ -252,6 +261,14 @@
       "price_eur": 1.19,
       "date": "2026-06-06",
       "price_per_100g": 0.238
+    },
+    {
+      "id": "dc0bc7f3-7c5b-4575-ae14-e9b950ce2273",
+      "product_id": "af8fad05-6cdb-4621-b77a-67b9aac4d0bb",
+      "store": "Carrefour",
+      "price_eur": 0.99,
+      "date": "2026-06-06",
+      "price_per_100g": 0.198
     }
   ],
   "purchase_history": [
