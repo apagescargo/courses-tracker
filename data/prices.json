@@ -62,6 +62,15 @@
       "weight_g": null,
       "category": "Épicerie",
       "image_url": "https://courses-traker.netlify.app/"
+    },
+    {
+      "id": "0daa99d9-6c7c-4631-ae0b-6731c53c766a",
+      "barcode": "3178050000749",
+      "name": "Huile d'olive",
+      "brand": "Puget",
+      "weight_g": 1000,
+      "category": "Boissons",
+      "image_url": "https://images.openfoodfacts.org/images/products/317/805/000/0749/front_fr.95.200.jpg"
     }
   ],
   "price_records": [
@@ -184,6 +193,14 @@
       "price_eur": 22.46,
       "date": "2026-06-06",
       "price_per_100g": null
+    },
+    {
+      "id": "c0b6d250-ed46-4a01-828a-0d49238a7bcb",
+      "product_id": "0daa99d9-6c7c-4631-ae0b-6731c53c766a",
+      "store": "Carrefour",
+      "price_eur": 12.15,
+      "date": "2026-06-06",
+      "price_per_100g": 1.215
     }
   ],
   "purchase_history": [
